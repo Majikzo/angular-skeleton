@@ -2,6 +2,6 @@ import { Environment } from './environment.type';
 
 export const environment: Environment = {
   api: '',
-  mockServices: false,
+  mockServices: true,
   production: false,
 };

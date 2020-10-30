@@ -1,18 +1,25 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
     "declaration": false,
-    "downlevelIteration": true,
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
     "importHelpers": true,
-    "typeRoots": ["node_modules/@types"],
-    "target": "es2015",
+    "lib": ["dom", "es2018"],
     "module": "es2020",
-    "lib": ["es2018", "dom"]
+    "moduleResolution": "node",
+    "outDir": "./dist/out-tsc",
+    "paths": {
+      "@angular/*": ["node_modules/@angular/*"],
+      "@core/*": ["src/app/core/*"],
+      "@home/*": ["src/app/modules/home/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@store/*": ["src/app/shared/store/*"]
+    },
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "target": "es2015",
+    "typeRoots": ["node_modules/@types"]
   }
 }
