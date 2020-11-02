@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialState } from '../../store';
-import { Store } from '@ngrx/store';
 import { StoreState } from '@store/store.types';
 import { cold } from 'jest-marbles';
+import { HomeSandbox } from '@home/services/sandbox/home.sandbox';
 import { LoadAction } from '@home/store/actions';
-import { HomeSandbox } from './home.sandbox';
 
 // TODO: Fix this test
 describe('HomeSandbox', () => {
@@ -18,8 +17,8 @@ describe('HomeSandbox', () => {
       providers: [HomeSandbox, provideMockStore({ initialState })],
     });
 
+    store = TestBed.inject(MockStore);
     sandbox = TestBed.inject(HomeSandbox);
-    store = TestBed.inject(Store) as MockStore<StoreState>;
     dispatchSpy = jest.spyOn(store, 'dispatch');
   });
 

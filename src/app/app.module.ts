@@ -7,14 +7,18 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { environment } from '../environments/environment';
+import { LocationStrategy, registerLocaleData } from '@angular/common';
+import localeEn from '@angular/common/locales/en';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { CustomTranslateLoaderFactory } from './config/i18n/custom-translate-loader';
+import { HttpClient } from '@angular/common/http';
+import { SharedModule } from '@shared/shared.module';
 
-const storeDevtoolsModule = [
-  environment.production
-    ? StoreDevtoolsModule.instrument({
-        logOnly: true,
-      })
-    : StoreDevtoolsModule.instrument(),
-];
+registerLocaleData(localeEn, 'nl');
+
+const storeDevtoolsModule = environment.production
+  ? StoreDevtoolsModule.instrument({ logOnly: true })
+  : StoreDevtoolsModule.instrument();
 
 const storeConfig = {
   runtimeChecks: {
@@ -26,14 +30,22 @@ const storeConfig = {
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     CoreModule,
-    AppRoutingModule,
-    StoreModule.forRoot({}, storeConfig),
     EffectsModule.forRoot([]),
-    ...storeDevtoolsModule,
+    SharedModule,
+    StoreModule.forRoot({}, storeConfig),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: CustomTranslateLoaderFactory,
+        deps: [HttpClient, LocationStrategy],
+      },
+      defaultLanguage: 'en',
+    }),
+    ...[storeDevtoolsModule],
   ],
-  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

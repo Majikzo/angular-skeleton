@@ -23,7 +23,7 @@ describe('Home Effects', () => {
     });
 
     effects = TestBed.inject(Effects);
-    homeHttpService = TestBed.inject<HomeHttpService>(HomeHttpService);
+    homeHttpService = TestBed.inject(HomeHttpService);
 
     spyTestStore = jest.spyOn(homeHttpService, 'testStore');
   });

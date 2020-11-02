@@ -1,33 +1,31 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { TranslateService } from '@ngx-translate/core';
+import { Shallow } from 'shallow-render';
+import { AppModule } from './app.module';
+import { SUPPORTED_LANGUAGE_DEFAULT } from './config/i18n/custom-translate-loader';
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [AppComponent],
-    }).compileComponents();
+  let shallow: Shallow<AppComponent>;
+
+  beforeEach(() => {
+    shallow = new Shallow(AppComponent, AppModule)
+      .provideMock(TranslateService)
+      .mock(TranslateService, {
+        setDefaultLang: jest.fn(),
+        use: jest.fn(),
+      });
   });
 
-  test('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  it('should create', async () => {
+    const component = await shallow.render();
+
+    expect(component).toBeTruthy();
   });
 
-  test(`should have as title 'angular-skeleton'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('angular-skeleton');
-  });
+  it('should initialize translations', async () => {
+    const { get } = await shallow.render();
 
-  test('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain(
-      'angular-skeleton app is running!'
-    );
+    expect(get(TranslateService).setDefaultLang).toHaveBeenCalledWith(SUPPORTED_LANGUAGE_DEFAULT);
+    expect(get(TranslateService).use).toHaveBeenCalledWith(SUPPORTED_LANGUAGE_DEFAULT);
   });
 });
